@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { TrackList } from './track-list/track-list';
+import { TrackForm } from './track-form/track-form';
 import { Track } from './models/track';
 
 @Component({
   selector: 'app-root',
-  imports: [TrackList],
+  imports: [TrackList, TrackForm],
   templateUrl: './app.html',
 })
 export class App {
@@ -28,4 +29,9 @@ export class App {
       genre: 'Disco-pop', durationSeconds: 183, year: 2019, rating: 8,
       favorite: true, coverUrl: 'https://picsum.photos/seed/6/300' },
   ]);
+
+  protected addTrack(track: Omit<Track, 'id'>) {
+    const nextId = Math.max(0, ...this.tracks().map((t) => t.id)) + 1;
+    this.tracks.update((tracks) => [...tracks, { ...track, id: nextId }]);
+  }
 }

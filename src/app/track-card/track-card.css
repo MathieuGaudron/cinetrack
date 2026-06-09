@@ -46,3 +46,13 @@
   font-size: 0.875rem;
   font-weight: 700;
 }
+
+.badge.gold {
+  color: #78350f;
+  background: #fde68a;
+}
+
+.badge.muted {
+  color: #475569;
+  background: #e2e8f0;
+}
