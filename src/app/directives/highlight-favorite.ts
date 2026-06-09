@@ -9,9 +9,11 @@ export class HighlightFavorite {
 
   constructor() {
     effect(() => {
-      this.el.nativeElement.style.outline = this.appHighlightFavorite()
-        ? '2px solid gold'
-        : 'none';
+      if (this.appHighlightFavorite()) {
+        this.el.nativeElement.style.outline = '2px solid gold';
+      } else {
+        this.el.nativeElement.style.outline = 'none';
+      }
     });
   }
 }

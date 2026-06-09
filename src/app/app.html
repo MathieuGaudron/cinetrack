@@ -1,3 +1,8 @@
 <h1>CinéTrack</h1>
 <app-track-form (save)="addTrack($event)" />
-<app-track-list [tracks]="tracks()" />
+
+@if (loading()) {
+  <p>Chargement des morceaux…</p>
+} @else {
+  <app-track-list [tracks]="tracks()" />
+}

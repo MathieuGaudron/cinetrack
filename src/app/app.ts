@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TrackList } from './track-list/track-list';
 import { TrackForm } from './track-form/track-form';
+import { TrackService } from './services/track.service';
 import { Track } from './models/track';
 
 @Component({
@@ -9,26 +11,20 @@ import { Track } from './models/track';
   templateUrl: './app.html',
 })
 export class App {
-  protected tracks = signal<Track[]>([
-    { id: 1, title: 'Blinding Lights', artist: 'The Weeknd', album: 'After Hours',
-      genre: 'Synth-pop', durationSeconds: 200, year: 2019, rating: 9,
-      favorite: true, coverUrl: 'https://picsum.photos/seed/1/300' },
-    { id: 2, title: 'As It Was', artist: 'Harry Styles', album: "Harry's House",
-      genre: 'Pop', durationSeconds: 167, year: 2022, rating: 8,
-      favorite: false, coverUrl: 'https://picsum.photos/seed/2/300' },
-    { id: 3, title: 'Levitating', artist: 'Dua Lipa', album: 'Future Nostalgia',
-      genre: 'Disco-pop', durationSeconds: 203, year: 2020, rating: 8,
-      favorite: false, coverUrl: 'https://picsum.photos/seed/3/300' },
-    { id: 4, title: 'Bad Guy', artist: 'Billie Eilish', album: 'When We All Fall Asleep',
-      genre: 'Electropop', durationSeconds: 194, year: 2019, rating: 9,
-      favorite: true, coverUrl: 'https://picsum.photos/seed/4/300' },
-    { id: 5, title: 'Save Your Tears', artist: 'The Weeknd', album: 'After Hours',
-      genre: 'Synth-pop', durationSeconds: 215, year: 2020, rating: 7,
-      favorite: false, coverUrl: 'https://picsum.photos/seed/5/300' },
-    { id: 6, title: 'Don\'t Start Now', artist: 'Dua Lipa', album: 'Future Nostalgia',
-      genre: 'Disco-pop', durationSeconds: 183, year: 2019, rating: 8,
-      favorite: true, coverUrl: 'https://picsum.photos/seed/6/300' },
-  ]);
+  private trackService = inject(TrackService);
+
+  private loadedTracks = toSignal(this.trackService.getTracks());
+
+  protected loading = computed(() => this.loadedTracks() === undefined);
+
+  protected tracks = linkedSignal(() => {
+    const loaded = this.loadedTracks();
+    if (loaded === undefined) {
+      return [];
+    } else {
+      return loaded;
+    }
+  });
 
   protected addTrack(track: Omit<Track, 'id'>) {
     const nextId = Math.max(0, ...this.tracks().map((t) => t.id)) + 1;
