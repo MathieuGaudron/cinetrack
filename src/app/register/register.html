@@ -1,0 +1,43 @@
+<h2>Inscription</h2>
+
+<form class="auth-form" novalidate (submit)="onSubmit($event)">
+  <label>
+    Nom
+    <input [formField]="registerForm.name" />
+  </label>
+  @if (registerForm.name().touched() && !registerForm.name().valid()) {
+    <small class="error">{{ registerForm.name().errors()[0]?.message }}</small>
+  }
+
+  <label>
+    Email
+    <input type="email" [formField]="registerForm.email" />
+  </label>
+  @if (registerForm.email().touched() && !registerForm.email().valid()) {
+    <small class="error">{{ registerForm.email().errors()[0]?.message }}</small>
+  }
+
+  <label>
+    Mot de passe
+    <input type="password" [formField]="registerForm.password" />
+  </label>
+  @if (registerForm.password().touched() && !registerForm.password().valid()) {
+    <small class="error">{{ registerForm.password().errors()[0]?.message }}</small>
+  }
+
+  @if (error()) {
+    <small class="error">{{ error() }}</small>
+  }
+
+  <button type="submit" [disabled]="!registerForm().valid() || submitting()">
+    @if (submitting()) {
+      Création…
+    } @else {
+      S'inscrire
+    }
+  </button>
+
+  <p class="switch">
+    Déjà un compte ? <a routerLink="/login">Se connecter</a>
+  </p>
+</form>

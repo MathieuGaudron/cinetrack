@@ -37,6 +37,32 @@
   margin: 0;
 }
  
+.detail-link {
+  width: fit-content;
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.detail-link:hover {
+  text-decoration: underline;
+}
+
+.delete {
+  width: fit-content;
+  padding: 0.3rem 0.6rem;
+  color: #b91c1c;
+  background: #fee2e2;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete:hover {
+  background: #fecaca;
+}
+
 .badge {
   width: fit-content;
   padding: 0.25rem 0.5rem;

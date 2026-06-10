@@ -1,0 +1,24 @@
+@if (auth.isLoggedIn()) {
+  <a class="add-link" routerLink="/tracks/new">➕ Ajouter un morceau</a>
+} @else {
+  <p class="hint">Connecte-toi pour ajouter ou supprimer des morceaux.</p>
+}
+
+<input
+  type="search"
+  class="search"
+  placeholder="Rechercher un titre ou un artiste…"
+  [value]="term()"
+  (input)="term.set($any($event.target).value)" />
+
+@if (loading()) {
+  <p>Chargement des morceaux…</p>
+} @else if (error()) {
+  <p class="error">Le chargement a échoué.</p>
+} @else {
+  <app-track-list
+    [tracks]="tracks()"
+    [searchTerm]="term()"
+    [canDelete]="auth.isLoggedIn()"
+    (remove)="removeTrack($event)" />
+}

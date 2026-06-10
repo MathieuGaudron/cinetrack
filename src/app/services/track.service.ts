@@ -20,4 +20,16 @@ export class TrackService {
     const params = new HttpParams().set('q', query);
     return this.http.get<Track[]>(this.baseUrl, { params });
   }
+
+  create(track: Omit<Track, 'id'>) {
+    return this.http.post<Track>(this.baseUrl, track);
+  }
+
+  update(id: number, changes: Partial<Track>) {
+    return this.http.patch<Track>(`${this.baseUrl}/${id}`, changes);
+  }
+
+  remove(id: number) {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

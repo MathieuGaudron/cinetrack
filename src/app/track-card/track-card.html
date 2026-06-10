@@ -23,4 +23,20 @@
   @if (active()) {
     <span class="badge">▶ En lecture</span>
   }
+
+  <a
+    class="detail-link"
+    [routerLink]="['/tracks', track().id]"
+    (click)="$event.stopPropagation()">
+    Voir la fiche →
+  </a>
+
+  @if (canDelete()) {
+    <button
+      type="button"
+      class="delete"
+      (click)="$event.stopPropagation(); remove.emit(track().id)">
+      🗑 Supprimer
+    </button>
+  }
 </article>

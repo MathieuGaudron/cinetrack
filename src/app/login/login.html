@@ -1,0 +1,35 @@
+<h2>Connexion</h2>
+
+<form class="login-form" novalidate (submit)="onSubmit($event)">
+  <label>
+    Email
+    <input type="email" [formField]="loginForm.email" />
+  </label>
+  @if (loginForm.email().touched() && !loginForm.email().valid()) {
+    <small class="error">{{ loginForm.email().errors()[0]?.message }}</small>
+  }
+
+  <label>
+    Mot de passe
+    <input type="password" [formField]="loginForm.password" />
+  </label>
+  @if (loginForm.password().touched() && !loginForm.password().valid()) {
+    <small class="error">{{ loginForm.password().errors()[0]?.message }}</small>
+  }
+
+  @if (error()) {
+    <small class="error">Identifiants invalides.</small>
+  }
+
+  <button type="submit" [disabled]="!loginForm().valid() || submitting()">
+    @if (submitting()) {
+      Connexion…
+    } @else {
+      Se connecter
+    }
+  </button>
+
+  <p class="switch">
+    Pas encore de compte ? <a routerLink="/register">S'inscrire</a>
+  </p>
+</form>

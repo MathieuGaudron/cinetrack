@@ -1,8 +1,29 @@
-<h1>CinéTrack</h1>
-<app-track-form (save)="addTrack($event)" />
+<header class="topbar">
+  <h1><a routerLink="/">CinéTrack</a></h1>
 
-@if (loading()) {
-  <p>Chargement des morceaux…</p>
-} @else {
-  <app-track-list [tracks]="tracks()" />
-}
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Catalogue
+    </a>
+    @if (auth.isLoggedIn()) {
+      <a routerLink="/tracks/new" routerLinkActive="active">Ajouter</a>
+    }
+  </nav>
+
+  <div class="auth-panel">
+    @if (auth.isLoggedIn()) {
+      @if (auth.user(); as u) {
+        <span class="user">Connecté · {{ u.name }}</span>
+      } @else {
+        <span class="user">Connecté</span>
+      }
+      <button type="button" (click)="logout()">Se déconnecter</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Se connecter</a>
+      <a routerLink="/register" routerLinkActive="active">Inscription</a>
+    }
+  </div>
+</header>
+
+<!-- la vue de la route active s'affiche ici -->
+<router-outlet />

@@ -1,0 +1,21 @@
+<p><a routerLink="/">← Retour à la liste</a></p>
+
+@if (loading()) {
+  <p>Chargement du morceau…</p>
+} @else if (error()) {
+  <p class="error">Morceau introuvable.</p>
+} @else if (track(); as t) {
+  <article class="detail">
+    <img [src]="t.coverUrl" [alt]="t.title" />
+    <div>
+      <h2>{{ t.title }}</h2>
+      <p class="artist">{{ t.artist }}</p>
+      <p>{{ t.album }} ({{ t.year }})</p>
+      <p>{{ t.genre }} · {{ t.durationSeconds | durationFormat }}</p>
+      <p>Note : {{ t.rating }}/10</p>
+      @if (t.favorite) {
+        <span class="badge">❤️ Favori</span>
+      }
+    </div>
+  </article>
+}
