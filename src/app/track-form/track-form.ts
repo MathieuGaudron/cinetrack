@@ -1,4 +1,4 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, input, linkedSignal, output } from '@angular/core';
 import { form, FormField, required, min, max } from '@angular/forms/signals';
 import { Track } from '../models/track';
 
@@ -9,9 +9,19 @@ import { Track } from '../models/track';
   styleUrl: './track-form.css',
 })
 export class TrackForm {
+  // Fourni en mode édition pour préremplir le formulaire ; null en création.
+  initial = input<Track | null>(null);
   protected save = output<Omit<Track, 'id'>>();
 
-  protected model = signal({ title: '', artist: '', rating: 5 });
+  // Se resynchronise quand `initial` change (morceau chargé en différé).
+  protected model = linkedSignal(() => {
+    const track = this.initial();
+    if (track) {
+      return { title: track.title, artist: track.artist, rating: track.rating };
+    } else {
+      return { title: '', artist: '', rating: 5 };
+    }
+  });
 
   protected trackForm = form(this.model, (path) => {
     required(path.title, { message: 'Le titre est requis' });
@@ -25,18 +35,31 @@ export class TrackForm {
     if (!this.trackForm().valid()) return;
 
     const { title, artist, rating } = this.model();
-    this.save.emit({
-      title: title.trim(),
-      artist: artist.trim(),
-      rating,
-      album: '',
-      genre: '',
-      durationSeconds: 0,
-      year: new Date().getFullYear(),
-      favorite: false,
-      coverUrl: `https://picsum.photos/seed/${encodeURIComponent(title)}/300`,
-    });
+    const existing = this.initial();
 
-    this.model.set({ title: '', artist: '', rating: 5 });
+    if (existing) {
+      // Édition : on conserve les champs non éditables du morceau existant.
+      const { id, ...rest } = existing;
+      this.save.emit({
+        ...rest,
+        title: title.trim(),
+        artist: artist.trim(),
+        rating,
+      });
+    } else {
+      // Création : valeurs par défaut pour les champs non saisis.
+      this.save.emit({
+        title: title.trim(),
+        artist: artist.trim(),
+        rating,
+        album: '',
+        genre: '',
+        durationSeconds: 0,
+        year: new Date().getFullYear(),
+        favorite: false,
+        coverUrl: `https://picsum.photos/seed/${encodeURIComponent(title)}/300`,
+      });
+      this.model.set({ title: '', artist: '', rating: 5 });
+    }
   }
 }

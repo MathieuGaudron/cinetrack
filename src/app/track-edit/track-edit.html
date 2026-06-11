@@ -1,0 +1,11 @@
+<a class="back-link" routerLink="/">← Retour à la liste</a>
+
+<h2>Modifier le morceau</h2>
+
+@if (loading()) {
+  <p>Chargement du morceau…</p>
+} @else if (error()) {
+  <p class="error">Morceau introuvable.</p>
+} @else if (track(); as t) {
+  <app-track-form [initial]="t" (save)="saveTrack($event)" />
+}

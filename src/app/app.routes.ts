@@ -20,6 +20,12 @@ export const routes: Routes = [
     loadComponent: () => import('./track-new/track-new').then((m) => m.TrackNew),
   },
   {
+    path: 'tracks/:trackId/edit',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./track-edit/track-edit').then((m) => m.TrackEdit),
+  },
+  {
     path: 'tracks/:trackId',
     loadComponent: () =>
       import('./track-detail/track-detail').then((m) => m.TrackDetail),

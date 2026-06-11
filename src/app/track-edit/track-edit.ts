@@ -1,39 +1,37 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { catchError, map, of, startWith, switchMap } from 'rxjs';
 import { Track } from '../models/track';
 import { TrackService } from '../services/track.service';
-import { AuthService } from '../services/auth.service';
-import { DurationFormatPipe } from '../pipes/duration-format-pipe';
+import { TrackForm } from '../track-form/track-form';
 
-type DetailState =
+type EditState =
   | { status: 'loading' }
   | { status: 'error' }
   | { status: 'loaded'; track: Track };
 
 @Component({
-  selector: 'app-track-detail',
-  imports: [RouterLink, DurationFormatPipe],
-  templateUrl: './track-detail.html',
-  styleUrl: './track-detail.css',
+  selector: 'app-track-edit',
+  imports: [TrackForm, RouterLink],
+  templateUrl: './track-edit.html',
 })
-export class TrackDetail {
+export class TrackEdit {
   trackId = input.required<number>();
   private service = inject(TrackService);
-  protected auth = inject(AuthService);
+  private router = inject(Router);
 
   private state = toSignal(
     toObservable(this.trackId).pipe(
       switchMap((id) =>
         this.service.getTrack(id).pipe(
-          map((track): DetailState => ({ status: 'loaded', track })),
-          startWith<DetailState>({ status: 'loading' }),
-          catchError(() => of<DetailState>({ status: 'error' })),
+          map((track): EditState => ({ status: 'loaded', track })),
+          startWith<EditState>({ status: 'loading' }),
+          catchError(() => of<EditState>({ status: 'error' })),
         ),
       ),
     ),
-    { initialValue: { status: 'loading' } satisfies DetailState },
+    { initialValue: { status: 'loading' } satisfies EditState },
   );
 
   protected loading = computed(() => this.state().status === 'loading');
@@ -44,7 +42,13 @@ export class TrackDetail {
     if (state.status === 'loaded') {
       return state.track;
     } else {
-      return undefined;
+      return null;
     }
   });
+
+  protected saveTrack(changes: Omit<Track, 'id'>) {
+    this.service.update(this.trackId(), changes).subscribe(() => {
+      this.router.navigate(['/tracks', this.trackId()]);
+    });
+  }
 }

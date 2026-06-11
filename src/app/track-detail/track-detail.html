@@ -1,4 +1,4 @@
-<p><a routerLink="/">← Retour à la liste</a></p>
+<a class="back-link" routerLink="/">← Retour à la liste</a>
 
 @if (loading()) {
   <p>Chargement du morceau…</p>
@@ -15,6 +15,9 @@
       <p>Note : {{ t.rating }}/10</p>
       @if (t.favorite) {
         <span class="badge">❤️ Favori</span>
+      }
+      @if (auth.isLoggedIn()) {
+        <a class="edit-link" [routerLink]="['/tracks', t.id, 'edit']">Modifier</a>
       }
     </div>
   </article>

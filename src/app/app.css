@@ -1,32 +1,57 @@
 .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 0.75rem 1.5rem;
+  background: rgb(255 255 255 / 72%);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .topbar h1 {
   margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.topbar h1 a,
+.topbar h1 a:hover {
+  color: var(--text);
 }
 
 .topbar nav {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-right: auto;
 }
 
 .topbar nav a,
 .auth-panel a {
-  text-decoration: none;
-  color: #2563eb;
-  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition:
+    background 160ms var(--ease),
+    color 160ms var(--ease);
+}
+
+.topbar nav a:hover,
+.auth-panel a:hover {
+  background: var(--border-light);
+  color: var(--text);
 }
 
 /* routerLinkActive ajoute cette classe au lien de la route courante */
-.topbar nav a.active {
-  color: #1e3a8a;
-  border-bottom: 2px solid #1e3a8a;
+.topbar nav a.active,
+.auth-panel a.active {
+  background: var(--text);
+  color: #fff;
 }
 
 .auth-panel {
@@ -36,16 +61,23 @@
 }
 
 .auth-panel .user {
-  font-weight: 600;
-  color: #374151;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 .auth-panel button {
-  padding: 0.4rem 0.75rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #fff;
-  background: #2563eb;
+  background: var(--accent);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
+  transition: background 160ms var(--ease);
+}
+
+.auth-panel button:hover {
+  background: var(--accent-hover);
 }
