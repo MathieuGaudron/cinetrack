@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { catchError, map, of, startWith, switchMap } from 'rxjs';
 import { Track } from '../models/track';
 import { TrackService } from '../services/track.service';
@@ -21,6 +21,7 @@ type DetailState =
 export class TrackDetail {
   trackId = input.required<number>();
   private service = inject(TrackService);
+  private router = inject(Router);
   protected auth = inject(AuthService);
 
   private state = toSignal(
@@ -47,4 +48,10 @@ export class TrackDetail {
       return undefined;
     }
   });
+
+  protected removeTrack(id: number) {
+    this.service.remove(id).subscribe(() => {
+      this.router.navigate(['/']);
+    });
+  }
 }

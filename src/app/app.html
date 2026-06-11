@@ -8,6 +8,9 @@
     @if (auth.isLoggedIn()) {
       <a routerLink="/tracks/new" routerLinkActive="active">Ajouter</a>
     }
+    @if (auth.isLoggedIn() && features.favorites) {
+      <a routerLink="/favorites" routerLinkActive="active">Favoris</a>
+    }
   </nav>
 
   <div class="auth-panel">

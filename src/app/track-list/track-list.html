@@ -4,8 +4,10 @@
       [track]="track"
       [active]="track.id === selectedId()"
       [canDelete]="canDelete()"
+      [canFavorite]="canFavorite()"
       (select)="selectedId.set($event.id)"
-      (remove)="remove.emit($event)" />
+      (remove)="remove.emit($event)"
+      (toggleFavorite)="toggleFavorite.emit($event)" />
   } @empty {
     @if (searchTerm().trim() !== '') {
       <p>Aucun résultat pour « {{ searchTerm() }} ».</p>

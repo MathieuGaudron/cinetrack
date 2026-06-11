@@ -1,0 +1,12 @@
+h2 {
+  margin: 0 0 1.25rem;
+}
+
+.error {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hint {
+  color: var(--text-secondary);
+}

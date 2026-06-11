@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { FeaturesService } from './services/features.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { AuthService } from './services/auth.service';
 export class App {
   private router = inject(Router);
   protected auth = inject(AuthService);
+  protected features = inject(FeaturesService);
 
   protected logout() {
     this.auth.logout();

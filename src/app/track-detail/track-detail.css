@@ -34,10 +34,15 @@
   font-weight: 600;
 }
 
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
 .edit-link {
   display: inline-flex;
   align-items: center;
-  margin-top: 0.75rem;
   padding: 0.5rem 1.1rem;
   color: var(--text);
   background: var(--border-light);
@@ -50,6 +55,22 @@
 .edit-link:hover {
   color: var(--text);
   background: var(--border);
+}
+
+.delete {
+  padding: 0.5rem 1.1rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 160ms var(--ease);
+}
+
+.delete:hover {
+  background: #ffd6dc;
 }
 
 .error {

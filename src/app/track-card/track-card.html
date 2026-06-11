@@ -1,9 +1,27 @@
 <article
   class="card"
   [class.active]="active()"
-  [appHighlightFavorite]="track().favorite"
+  [appHighlightFavorite]="features.favorites && track().favorite"
   (click)="select.emit(track())">
-  <img [src]="track().coverUrl" [alt]="track().title" />
+  <div class="cover">
+    <img [src]="track().coverUrl" [alt]="track().title" />
+
+    @if (features.favorites && canFavorite()) {
+      <button
+        type="button"
+        class="fav"
+        [class.is-fav]="track().favorite"
+        [attr.aria-pressed]="track().favorite"
+        aria-label="Basculer le favori"
+        (click)="$event.stopPropagation(); toggleFavorite.emit(track())">
+        @if (track().favorite) {
+          ♥
+        } @else {
+          ♡
+        }
+      </button>
+    }
+  </div>
   <h3>{{ track().title }}</h3>
   <p>{{ track().artist }}</p>
   <p class="duration">{{ track().durationSeconds | durationFormat }}</p>

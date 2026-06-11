@@ -16,7 +16,12 @@
   outline-offset: 3px;
 }
 
+.cover {
+  position: relative;
+}
+
 .card img {
+  display: block;
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
@@ -25,6 +30,51 @@
   transition:
     transform 220ms var(--ease),
     box-shadow 220ms var(--ease);
+}
+
+/* Action favori : bouton flottant en haut à droite de la pochette */
+.fav {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text);
+  background: rgb(255 255 255 / 85%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 160ms var(--ease),
+    transform 160ms var(--ease),
+    color 160ms var(--ease),
+    background 160ms var(--ease);
+}
+
+/* Visible au survol de la carte, et toujours visible si déjà favori */
+.card:hover .fav,
+.fav.is-fav,
+.fav:focus-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.fav:hover {
+  background: #fff;
+}
+
+.fav.is-fav {
+  color: var(--accent);
 }
 
 .card:hover img {

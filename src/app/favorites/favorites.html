@@ -1,0 +1,14 @@
+<h2>Mes favoris</h2>
+
+@if (loading()) {
+  <p>Chargement des favoris…</p>
+} @else if (error()) {
+  <p class="error">Le chargement des favoris a échoué.</p>
+} @else if (tracks().length === 0) {
+  <p class="hint">Aucun favori pour le moment. Ajoute-en depuis le catalogue.</p>
+} @else {
+  <app-track-list
+    [tracks]="tracks()"
+    [canFavorite]="true"
+    (toggleFavorite)="removeFavorite($event)" />
+}

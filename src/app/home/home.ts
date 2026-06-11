@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 import { TrackList } from '../track-list/track-list';
 import { TrackService } from '../services/track.service';
 import { AuthService } from '../services/auth.service';
+import { FeaturesService } from '../services/features.service';
 import { Track } from '../models/track';
 
 type ListState =
@@ -29,6 +30,7 @@ type ListState =
 export class Home {
   private trackService = inject(TrackService);
   protected auth = inject(AuthService);
+  protected features = inject(FeaturesService);
   protected term = signal('');
 
   // Recherche côté serveur : un terme vide renvoie toute la liste.
@@ -59,12 +61,35 @@ export class Home {
     }
   });
 
-  // Copie locale modifiable : se resynchronise à chaque nouvelle recherche.
   protected tracks = linkedSignal(() => this.serverTracks());
 
   protected removeTrack(id: number) {
     this.trackService.remove(id).subscribe(() => {
       this.tracks.update((tracks) => tracks.filter((t) => t.id !== id));
     });
+  }
+
+  protected toggleFavorite(track: Track) {
+    if (track.favorite) {
+      this.trackService.removeFavorite(track.id).subscribe((updated) => {
+        this.applyFavorite(updated);
+      });
+    } else {
+      this.trackService.addFavorite(track.id).subscribe((updated) => {
+        this.applyFavorite(updated);
+      });
+    }
+  }
+
+  private applyFavorite(updated: Track) {
+    this.tracks.update((tracks) =>
+      tracks.map((t) => {
+        if (t.id === updated.id) {
+          return updated;
+        } else {
+          return t;
+        }
+      }),
+    );
   }
 }

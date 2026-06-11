@@ -17,7 +17,12 @@
         <span class="badge">❤️ Favori</span>
       }
       @if (auth.isLoggedIn()) {
-        <a class="edit-link" [routerLink]="['/tracks', t.id, 'edit']">Modifier</a>
+        <div class="actions">
+          <a class="edit-link" [routerLink]="['/tracks', t.id, 'edit']">Modifier</a>
+          <button type="button" class="delete" (click)="removeTrack(t.id)">
+            Supprimer
+          </button>
+        </div>
       }
     </div>
   </article>

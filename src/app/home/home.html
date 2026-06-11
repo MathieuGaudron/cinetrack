@@ -20,5 +20,7 @@
     [tracks]="tracks()"
     [searchTerm]="term()"
     [canDelete]="auth.isLoggedIn()"
-    (remove)="removeTrack($event)" />
+    [canFavorite]="auth.isLoggedIn() && features.favorites"
+    (remove)="removeTrack($event)"
+    (toggleFavorite)="toggleFavorite($event)" />
 }

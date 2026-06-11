@@ -12,6 +12,8 @@ export class TrackList {
   tracks = input.required<Track[]>();
   searchTerm = input('');
   canDelete = input(false);
+  canFavorite = input(false);
   remove = output<number>();
+  toggleFavorite = output<Track>();
   protected selectedId = signal<number | null>(null);
 }
